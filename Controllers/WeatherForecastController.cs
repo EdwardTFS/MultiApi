@@ -10,16 +10,19 @@ namespace MultiApi.Controllers;
 [Route("[controller]")]
 public class WeatherForecastController : ControllerBase
 {
-    private static readonly string[] Summaries = new[]
-    {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
 
+    // private static readonly string[] Summaries = new[]
+    // {
+    //     "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+    // };
+
+    private readonly ITestService testService;
     private readonly ILogger<WeatherForecastController> _logger;
 
-    public WeatherForecastController(ILogger<WeatherForecastController> logger)
+    public WeatherForecastController(ILogger<WeatherForecastController> logger,ITestService testService)
     {
         _logger = logger;
+        this.testService = testService;
     }
 
     [HttpGet(Name = "GetWeatherForecast")]
@@ -30,7 +33,7 @@ public class WeatherForecastController : ControllerBase
         {
             Date = DateTime.Now.AddDays(index),
             TemperatureC = Random.Shared.Next(-20, 55),
-            Summary = Summaries[Random.Shared.Next(Summaries.Length)]
+            Summary = testService.GetData()
         })
         .ToArray();
     }
